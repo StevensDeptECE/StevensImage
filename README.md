@@ -32,7 +32,7 @@ Image(uint32_t width, uint32_t height, const uint32_t RGBAVAL);
 ```
 Creates an Image object of a single color as specified by the thrid argument. Size of the image is based on the width and height declared by the first and second arguments. Right now this is not fully functional because we need to find a way to tell devIL the size of our image so we can feed it data. Because of this, two lines of code are commented out for now. The image data cannot be manipulated or saved until we can properly share the image characteristics with devIL.
 <br/><br/>
-#### IO Methods
+#### Image File IO Methods
 ```c++
 bool load(const char filename[]);
 ```
@@ -43,7 +43,7 @@ bool save(const char filename[]);
 ```
 Saves an image to disk using the filepath specified by the single argument. Returns true if the load is successful, false if something goes wrong. Right now it also prints a message in the console as to the result of the operation. Exception handling is not currently in use, but should be. This method calls devIL's ilSaveImage(filename) to perform the saving right now. Our goal is to rewrite our save method with clean code. Because we are using devIL, the private methods for saving images are not currently in use.
 <br/><br/>
-#### Manipulation Methods
+#### Image Manipulation Methods
 ```c++
 void clear(const uint32_t RGBAVAL);
 ```
@@ -145,19 +145,19 @@ void saveJPEG2000(const char filename[]);               // Not yet implemented.
 void loadPNG(int fh);                                   // Not yet implemented.
 void savePNG(int fh);                                   // Not yet implemented.
 ```
-These methods are for use when we replace the devIL load and save calls with our own code. Our public load and saves will call these methods.
+**Not yet implemented.** These methods are for use when we replace the devIL load and save calls with our own code. Our public load and saves will call these methods.
 <br/><br/>
 
 #### Other Methods
 ```c++
 std::string checkExtension(const char filename[]);
 ```
-Very basic method for checking the extension of an image we load. To be used in the future, when we use our own load code and need to check file extensions at load time. Extension checking is currently handled by devIL in the load function we call.
+Currently a very basic method for checking the extension of an image we load. To be used in the future, when we use our own load code and need to check file extensions at load time. Extension checking is currently handled by devIL in the load function we call.
 <br/><br/>
 ```c++
 bool isValidPNG() const;        // Not yet implemented.
 bool isValidJPeg() const;       // Not yet implemented.
 static char* loadFile();        // Not yet implemented.
 ```
-These methods are to be implemented in the future.
+**Not yet implemented.** These methods are to be implemented in the future.
 <br/><br/>
