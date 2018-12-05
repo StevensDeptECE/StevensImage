@@ -2,7 +2,7 @@
 Clean wrapper for some ugly image libraries, designed to teach encapsulation and modernizing code.
 
 ## The Basics
-StevensImage allows for simple image manipulations. It currently utilizes Developer's Image Library (devIL) to load and save images. The initial spec was created by Professor Dov Kruger and the initial implementation was performed by Matt Sorrentino during a C++ independent study with Professor Kruger. 
+StevensImage allows for simple image manipulations. It currently utilizes Developer's Image Library (devIL) to load and save images while using our own code for image manipulations. The initial spec was created by Professor Dov Kruger and the initial implementation was performed by Matt Sorrentino during a C++ independent study with Professor Kruger. 
 
 ## Getting Started
 Download StevensImage. Install devIL from source (along with all of its dependencies) and add it to your project. 
@@ -89,4 +89,75 @@ Returns a uint32_t representing the height of the image in pixels.
 uint32_t* getPixels() { return rgba; }
 ```
 Returns a pointer to a 1D array of uint32_t representing all of the pixels in the image.
+<br/><br/>
+### Private Members
+
+#### Data
+```c++
+uint32_t width_;
+```
+Stores the image width in pixels.
+<br/><br/>
+```c++
+uint32_t height_; 
+```
+Stores the image height in pixels.
+<br/><br/>
+```c++
+uint32_t *rgba; 
+```
+Points to a 1D array of size (width x height) which holds the color data for each pixel in the image. Pixel data is stored in RGBA format. Each element is a uint32_t with 4 sub-values: R (red color value), G (green color value), B (blue color value), A (transparancy value). 8 bits per value (valid values range from 0 to 255). The data is stored and read from each uint32_t by using bitwise operators.
+<br/><br/>
+
+#### Constructors
+```c++
+Image(uint32_t width, uint32_t height) : width_(width), height_(height), rgba(new uint32_t[width*height]) {}
+```
+For future use within the class. Could be called by other constructors. Not currently in use.
+<br/><br/>
+
+#### Internal Setter Methods
+```c++
+void setWidth();
+```
+Sets our width data member to the value that devIL has determined to be correct. We call this once we load an image using devIL so that we have accurate width data.
+<br/><br/>
+```c++
+void setHeight(); 
+```
+Sets our height data member to the value that devIL has determined to be correct. We call this once we load an image using devIL so that we have accurate height data.
+<br/><br/>
+```c++
+void setRGBA();
+```
+Loads our pixel array rgba with pixel data from devIL. We call this once we load an image using devIL so that we have accurate image data.
+<br/><br/>
+```c++
+void pushPixelDataToDevIL();
+```
+Replaces devIL's byte array of pixel data with our latest pixel data. We call this after we manipulate the image in some way i.e. flip or rotate, so that devIL has the right data when we go to save the image.
+<br/><br/>
+
+#### Internal Load & Save Methods
+```c++
+bool loadJPEG2000(const char filename[]);               // Not yet implemented.
+void saveJPEG2000(const char filename[]);               // Not yet implemented.
+void loadPNG(int fh);                                   // Not yet implemented.
+void savePNG(int fh);                                   // Not yet implemented.
+```
+These methods are for use when we replace the devIL load and save calls with our own code. Our public load and saves will call these methods.
+<br/><br/>
+
+#### Other Methods
+```c++
+std::string checkExtension(const char filename[]);
+```
+Very basic method for checking the extension of an image we load. To be used in the future, when we use our own load code and need to check file extensions at load time. Extension checking is currently handled by devIL in the load function we call.
+<br/><br/>
+```c++
+bool isValidPNG() const;        // Not yet implemented.
+bool isValidJPeg() const;       // Not yet implemented.
+static char* loadFile();        // Not yet implemented.
+```
+These methods are to be implemented in the future.
 <br/><br/>
