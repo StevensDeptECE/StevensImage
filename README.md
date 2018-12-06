@@ -16,6 +16,39 @@ Download StevensImage. Install devIL from source (along with all of its dependen
 
 4) Implement additional methods, which may include image rotation and shape drawing functionality, amongst other things.
 
+## Important Notes Regarding Current Functionality
+### Work in Progress
+Not all methods are implemented, and a couple implemented methods may not work exaclty as desired in all situations yet. See the Code section below for details.
+
+### Working With Multiple Images
+Because of the current use of devIL for load and save, using multiple image objects at once in a single program will result in unexpected behavior. 
+
+For example, the below code loads two different images, performs manipulation on both, then saves both images. However, because we are running just one instance of devIL and we push the updated pixel data to devIL after each image manipulation, the last image to be manipulated is the image that devIL's data is referencing. So, when the code below goes to save the two images, we will really be saving two copies of i2, because that image data is what devIL is referencing.
+```c++
+Image i("test.jpeg");
+Image i2("test2.jpeg");
+    
+i.flipHorizontal();
+i2.rotate180();
+    
+i.save("test-output.jpeg");
+i2.save("test2-output.jpeg");
+```
+
+If the above is what we are looking to perform, the below code will work. Note that only one image is referenced at a time, and thus the outcome is as desired. 
+```c++
+Image i("test.jpeg");
+i.flipHorizontal();
+i.save("test-output.jpeg");
+
+Image i2("test2.jpeg");
+i2.rotate180();
+i2.save("test2-output.jpeg");
+```
+
+### Copying Image Objects
+Although the copy assignment operator and copy constructor both work properly, copying image objects is an example of using multiple images at once, and thus results in unexpected behavior as per the above note.
+
 
 ## Code
 
